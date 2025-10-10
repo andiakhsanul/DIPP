@@ -1,0 +1,16 @@
+{
+    frankenphp
+    order php_server before file_server
+}
+
+:8000 {
+    root * /app/public
+    php_server
+    file_server
+    encode gzip
+    
+    log {
+        output stdout
+        format console
+    }
+}
