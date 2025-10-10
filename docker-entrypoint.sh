@@ -19,7 +19,7 @@ if [ ! -f ".env" ]; then
     echo "🔧 Creating .env file..."
     cp .env.example .env
     php artisan key:generate --force
-    
+
     # Update database config
     sed -i 's/DB_CONNECTION=sqlite/DB_CONNECTION=mysql/' .env
     sed -i 's/DB_HOST=127.0.0.1/DB_HOST=db/' .env

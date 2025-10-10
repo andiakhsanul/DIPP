@@ -8,7 +8,7 @@
     php_server
     file_server
     encode gzip
-    
+
     log {
         output stdout
         format console
