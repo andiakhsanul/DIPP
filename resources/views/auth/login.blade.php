@@ -24,12 +24,12 @@
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" 
-                               class="form-control @error('email') is-invalid @enderror" 
-                               id="email" 
-                               name="email" 
-                               value="{{ old('email') }}" 
-                               required 
+                        <input type="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               id="email"
+                               name="email"
+                               value="{{ old('email') }}"
+                               required
                                autofocus
                                placeholder="Enter your email">
                         @error('email')
@@ -39,10 +39,10 @@
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" 
-                               class="form-control @error('password') is-invalid @enderror" 
-                               id="password" 
-                               name="password" 
+                        <input type="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               id="password"
+                               name="password"
                                required
                                placeholder="Enter your password">
                         @error('password')
@@ -74,7 +74,7 @@
                     </a>
 
                     <div class="text-center">
-                        <p class="mb-0">Don't have an account? 
+                        <p class="mb-0">Don't have an account?
                             <a href="{{ route('register') }}" class="text-decoration-none fw-bold">Register here</a>
                         </p>
                     </div>
