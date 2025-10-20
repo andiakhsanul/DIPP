@@ -1,6 +1,15 @@
 # 🚀 DIPP - Aplikasi Pendaftaran Laravel
 
-Aplikasi pendaftaran menggunakan **Laravel 12**, **FrankenPHP**, **MySQL 8.0**, **Bootstrap 5**, dan **Docker**.
+Aplikasi pendaftaran dengan **Login/Register**, **Email Verification**, dan **Google OAuth** menggunakan **Laravel 12**, **FrankenPHP**, **MySQL 8.0**, **Bootstrap 5**, dan **Docker**.
+
+## ✨ Features
+
+✅ **Email & Password Registration** - Form registration dengan validasi  
+✅ **Email Verification** - Konfirmasi email sebelum login  
+✅ **Google OAuth Login** - Login dengan akun Google  
+✅ **Secure Authentication** - Password hashing & CSRF protection  
+✅ **Modern UI** - Bootstrap 5 dengan responsive design  
+✅ **Dashboard** - Protected page dengan user info  
 
 ---
 
@@ -37,6 +46,15 @@ docker-compose up -d --build
 - **phpMyAdmin**: http://localhost:8080
 
 **SELESAI!** 🎊
+
+### 4️⃣ Test Authentication
+
+1. **Buka**: http://localhost:8000
+2. **Klik "Register"** → Isi form → Submit
+3. **Email verification link** ada di `storage/logs/laravel.log`
+4. **Copy link** → Paste di browser → Dashboard terbuka!
+
+**Untuk Google OAuth**: Lihat `GOOGLE_OAUTH_SETUP.md`
 
 ---
 
@@ -192,13 +210,27 @@ Tunggu 30 detik setelah start, database perlu waktu untuk ready.
 
 ---
 
+## 📚 Documentation
+
+Untuk dokumentasi lengkap, baca file-file berikut:
+
+- **`AUTH_DOCUMENTATION.md`** - Complete authentication guide (LOGIN/REGISTER)
+- **`GOOGLE_OAUTH_SETUP.md`** - Setup Google OAuth step-by-step
+- **`GOOGLE_OAUTH_REFERENCE.md`** - Technical reference untuk OAuth
+- **`SETUP_INSTRUCTIONS.md`** - Detailed setup instructions
+- **`QUICKSTART.md`** - Quick reference commands
+- **`CLONE_INSTRUCTIONS.md`** - Instructions for team members
+
+---
+
 ## 🎯 Teknologi Stack
 
 - **PHP**: 8.3
 - **Laravel**: 12.x (Latest!)
 - **Web Server**: FrankenPHP (Modern PHP App Server)
 - **Database**: MySQL 8.0
-- **Frontend**: Bootstrap 5 (coming soon)
+- **Frontend**: Bootstrap 5 + Bootstrap Icons
+- **Authentication**: Laravel Breeze-style manual + Socialite
 - **Container**: Docker + Docker Compose
 
 ---
