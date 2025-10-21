@@ -14,6 +14,32 @@ Sistem login/register dengan email verification dan Google OAuth telah berhasil 
 | **Dashboard** | http://localhost:8000/dashboard | Requires auth + verified |
 | **phpMyAdmin** | http://localhost:8080 | root / root_password |
 
+## ✅ Bug Fixes
+
+### Fixed: DashboardController Error (Laravel 12)
+
+**Error:**
+```
+Call to undefined method App\Http\Controllers\DashboardController::middleware()
+```
+
+**Root Cause:** 
+Laravel 12 tidak support `$this->middleware()` di controller constructor.
+
+**Solution:** 
+Middleware dipindahkan ke route definition di `routes/web.php`:
+
+```php
+// routes/web.php
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+```
+
+**Status:** ✅ Fixed!
+
+---
+
 ## 🧪 Testing Instructions
 
 ### Test 1: Register dengan Email
@@ -25,12 +51,13 @@ Sistem login/register dengan email verification dan Google OAuth telah berhasil 
    - Password: `password123`
    - Confirm Password: `password123`
 3. **Submit** → Redirect ke email verification notice
-4. **Get verification link**:
+4. **Get verification link** (jika pakai MAIL_MAILER=log):
    ```bash
    docker-compose exec app tail -20 storage/logs/laravel.log | grep "email/verify"
    ```
-5. **Copy link** dan paste di browser
-6. **✅ Success!** → Dashboard terbuka
+5. **Atau cek Mailtrap** (jika sudah setup SMTP)
+6. **Copy link** dan paste di browser
+7. **✅ Success!** → Dashboard terbuka
 
 ### Test 2: Login dengan Email
 
