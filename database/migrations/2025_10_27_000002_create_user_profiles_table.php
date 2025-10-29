@@ -15,8 +15,9 @@ return new class extends Migration
             // Primary key is user_id to enforce 1-1 relation with users
             $table->foreignId('user_id')->primary()->constrained('users')->onDelete('cascade');
             $table->string('full_name');
-            $table->string('phone_number')->nullable();
-            $table->string('institution')->nullable();
+            $table->string('nidn')->unique();
+            $table->string('university');
+            $table->string('phone_number');
             $table->timestamps();
         });
     }

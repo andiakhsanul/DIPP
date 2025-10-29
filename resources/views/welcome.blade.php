@@ -231,12 +231,15 @@
                     <p class="hero-subtitle">
                         Experience seamless data processing with our modern tech stack, powered by Laravel 12, FrankenPHP, and Bootstrap 5.
                     </p>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 flex-wrap">
                         <a href="{{ route('register') }}" class="btn btn-primary">
                             <i class="bi bi-rocket-takeoff me-2"></i>Get Started
                         </a>
                         <a href="https://github.com/andiakhsanul/DIPP" target="_blank" class="btn btn-outline-primary">
                             <i class="bi bi-github me-2"></i>View Source
+                        </a>
+                        <a href="{{ route('test.show') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-envelope me-2"></i>Tes
                         </a>
                     </div>
                 </div>

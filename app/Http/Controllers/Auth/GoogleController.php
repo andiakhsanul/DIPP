@@ -51,6 +51,12 @@ class GoogleController extends Controller
 
             Auth::login($user);
 
+            // Check if profile is completed
+            if (!$user->hasCompletedProfile()) {
+                return redirect()->route('profile.create')
+                    ->with('info', 'Please complete your profile to continue.');
+            }
+
             return redirect()->route('dashboard');
 
         } catch (Exception $e) {

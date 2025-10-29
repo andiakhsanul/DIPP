@@ -44,6 +44,12 @@ class LoginController extends Controller
                 return redirect()->route('verification.notice');
             }
 
+            // Check if profile is completed
+            if (!Auth::user()->hasCompletedProfile()) {
+                return redirect()->route('profile.create')
+                    ->with('info', 'Please complete your profile to continue.');
+            }
+
             return redirect()->intended(route('dashboard'));
         }
 

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('registration_date')->useCurrent();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->string('payment_receipt_url')->nullable();
+            $table->string('npwp_ktp')->nullable();
+            $table->string('surat_tugas')->nullable();
             $table->timestamps();
 
             // Prevent duplicate registrations for same user & batch

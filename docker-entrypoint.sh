@@ -32,18 +32,16 @@ fi
 echo "🔐 Setting permissions..."
 chmod -R 777 storage bootstrap/cache 2>/dev/null || true
 
+# Clear caches before migrations
+echo "🧹 Clearing caches..."
+php artisan optimize:clear 2>/dev/null || true
+
 # Wait a bit more for database
 sleep 10
 
 # Run migrations
 echo "🗄️  Running migrations..."
 php artisan migrate --force 2>/dev/null || echo "⚠️  Migrations failed - database might not be ready yet"
-
-# Clear caches
-echo "🧹 Clearing caches..."
-php artisan config:clear
-php artisan cache:clear
-php artisan view:clear
 
 echo "✅ Laravel ready!"
 echo "🌐 Access at: http://localhost:8000"

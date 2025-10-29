@@ -11,6 +11,19 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $user = auth()->user();
+
+        // Redirect admin to admin dashboard
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        // Get user registrations with batch details
+        $registrations = $user->registrations()
+            ->with('batch')
+            ->latest()
+            ->get();
+
+        return view('dashboard', compact('registrations'));
     }
 }

@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'google_id',
         'avatar',
         'email_verified_at',
+        'role',
     ];
 
     /**
@@ -47,5 +48,37 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user has completed profile
+     */
+    public function hasCompletedProfile(): bool
+    {
+        return $this->profile()->exists();
+    }
+
+    /**
+     * Get the user's profile
+     */
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    /**
+     * Get the user's registrations
+     */
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
     }
 }

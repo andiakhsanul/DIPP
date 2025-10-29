@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('training_type', ['pekerti', 'aa', 'tot']);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->dateTime('registration_open')->nullable();
-            $table->dateTime('registration_close')->nullable();
-            $table->integer('quota')->default(0);
-            $table->enum('status', ['draft', 'open', 'closed', 'completed'])->default('draft');
+            $table->string('batch_name');
+            $table->string('training_type');
+            $table->text('description')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->date('registration_start');
+            $table->date('registration_end');
+            $table->integer('quota');
+            $table->integer('max_participants');
+            $table->string('location')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
