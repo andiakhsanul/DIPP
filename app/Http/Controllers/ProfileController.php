@@ -28,22 +28,21 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'nidn_nidk_nuptk' => 'required|string|max:50',
-            'institution' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'address' => 'required|string',
-            'city' => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:10',
+            'nidn' => 'required|string|size:10|unique:user_profiles,nidn',
+            'university' => 'required|string|max:255',
+            'phone_number' => 'required|string|min:10|max:13',
         ]);
 
         UserProfile::create([
             'user_id' => auth()->id(),
-            ...$validated
+            'full_name' => $validated['full_name'],
+            'nidn' => $validated['nidn'],
+            'university' => $validated['university'],
+            'phone_number' => $validated['phone_number'],
         ]);
 
         return redirect()->route('registration.create')
-            ->with('success', 'Profile completed! Please proceed with training registration.');
+            ->with('success', 'Profil berhasil dilengkapi! Silakan lanjutkan ke pendaftaran pelatihan.');
     }
 
     /**
@@ -52,7 +51,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $profile = auth()->user()->profile;
-        
+
         if (!$profile) {
             return redirect()->route('profile.create');
         }
@@ -69,18 +68,14 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'nidn_nidk_nuptk' => 'required|string|max:50',
-            'institution' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'address' => 'required|string',
-            'city' => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:10',
+            'nidn' => 'required|string|size:10|unique:user_profiles,nidn,' . $profile->user_id . ',user_id',
+            'university' => 'required|string|max:255',
+            'phone_number' => 'required|string|min:10|max:13',
         ]);
 
         $profile->update($validated);
 
         return redirect()->route('dashboard')
-            ->with('success', 'Profile updated successfully!');
+            ->with('success', 'Profil berhasil diperbarui!');
     }
 }

@@ -20,7 +20,7 @@ class DashboardController extends Controller
             'pending_registrations' => Registration::pending()->count(),
             'approved_registrations' => Registration::approved()->count(),
             'total_batches' => Batch::count(),
-            'active_batches' => Batch::whereIn('status', ['open', 'scheduled'])->count(),
+            'active_batches' => Batch::where('is_active', true)->count(),
         ];
 
         $recent_registrations = Registration::with(['user.profile', 'batch'])
@@ -28,7 +28,7 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        $active_batches = Batch::whereIn('status', ['open', 'scheduled'])
+        $active_batches = Batch::where('is_active', true)
             ->withCount('registrations')
             ->orderBy('start_date')
             ->take(5)

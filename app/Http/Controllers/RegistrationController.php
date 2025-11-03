@@ -15,7 +15,7 @@ class RegistrationController extends Controller
      */
     public function create()
     {
-        $batches = Batch::where('status', 'open')
+        $batches = Batch::where('is_active', true)
             ->where('registration_end', '>=', now())
             ->withCount('registrations')
             ->get();
@@ -51,7 +51,7 @@ class RegistrationController extends Controller
 
             // Check quota with FIFO logic
             $approvedCount = $batch->approvedCount();
-            
+
             if ($approvedCount >= $batch->quota) {
                 DB::rollBack();
                 return back()->with('error', 'Sorry, this batch is full. Please choose another batch.');

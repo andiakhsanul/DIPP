@@ -40,36 +40,45 @@ class AdminAndBatchSeeder extends Seeder
         // Create Sample Batches (only if they don't exist)
         if (Batch::count() == 0) {
             Batch::create([
-                'name' => 'Pelatihan Pekerti Batch 1 - 2025',
+                'batch_name' => 'Pelatihan Pekerti Batch 1 - 2025',
+                'training_type' => 'Pekerti',
                 'description' => 'Pelatihan Pekerti untuk Dosen Tingkat Pertama',
                 'start_date' => now()->addDays(30),
                 'end_date' => now()->addDays(35),
+                'quota' => 50,
                 'max_participants' => 50,
                 'registration_start' => now(),
                 'registration_end' => now()->addDays(25),
-                'status' => 'open',
+                'location' => 'Universitas Airlangga',
+                'is_active' => true,
             ]);
 
             Batch::create([
-                'name' => 'Pelatihan Pekerti Batch 2 - 2025',
+                'batch_name' => 'Pelatihan Pekerti Batch 2 - 2025',
+                'training_type' => 'Pekerti',
                 'description' => 'Pelatihan Pekerti untuk Dosen Tingkat Lanjutan',
                 'start_date' => now()->addDays(60),
                 'end_date' => now()->addDays(65),
+                'quota' => 40,
                 'max_participants' => 40,
                 'registration_start' => now()->addDays(10),
                 'registration_end' => now()->addDays(55),
-                'status' => 'scheduled',
+                'location' => 'Universitas Airlangga',
+                'is_active' => false,
             ]);
 
             Batch::create([
-                'name' => 'Pelatihan AA Batch 1 - 2025',
+                'batch_name' => 'Pelatihan AA Batch 1 - 2025',
+                'training_type' => 'Applied Approach',
                 'description' => 'Pelatihan Applied Approach untuk Dosen',
                 'start_date' => now()->addDays(90),
                 'end_date' => now()->addDays(95),
+                'quota' => 30,
                 'max_participants' => 30,
                 'registration_start' => now()->addDays(40),
                 'registration_end' => now()->addDays(85),
-                'status' => 'scheduled',
+                'location' => 'Universitas Airlangga',
+                'is_active' => false,
             ]);
         }
 

@@ -70,4 +70,38 @@ class Batch extends Model
     {
         return $query->where('is_active', true);
     }
+
+    /**
+     * Get batch status attribute (for backward compatibility)
+     */
+    public function getStatusAttribute()
+    {
+        if (!$this->is_active) {
+            return 'closed';
+        }
+
+        $now = now();
+        $registrationStart = $this->registration_start;
+        $registrationEnd = $this->registration_end;
+        $startDate = $this->start_date;
+        $endDate = $this->end_date;
+
+        // Completed - training has ended
+        if ($now->isAfter($endDate)) {
+            return 'completed';
+        }
+
+        // Open - registration is currently open
+        if ($now->between($registrationStart, $registrationEnd)) {
+            return 'open';
+        }
+
+        // Scheduled - registration hasn't started or training hasn't started
+        if ($now->isBefore($registrationStart) || $now->between($registrationEnd, $startDate)) {
+            return 'scheduled';
+        }
+
+        // Default to scheduled
+        return 'scheduled';
+    }
 }

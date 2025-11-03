@@ -9,16 +9,18 @@ class UserProfile extends Model
 {
     use HasFactory;
 
+    // Set user_id as primary key (matching migration)
+    protected $primaryKey = 'user_id';
+
+    // Disable auto-increment since user_id is foreign key
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id',
         'full_name',
-        'nidn_nidk_nuptk',
-        'institution',
+        'nidn',
+        'university',
         'phone_number',
-        'address',
-        'city',
-        'province',
-        'postal_code',
     ];
 
     /**

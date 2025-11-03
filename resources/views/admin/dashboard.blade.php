@@ -333,7 +333,7 @@
     .list-group-item {
         transition: all 0.2s ease;
     }
-    
+
     .list-group-item:hover {
         background-color: #f8fafc;
     }
