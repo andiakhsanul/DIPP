@@ -130,7 +130,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="fw-semibold small">{{ $registration->batch->name }}</div>
+                                        <div class="fw-semibold small">{{ $registration->batch->batch_name }}</div>
                                         <small class="text-muted">
                                             <i class="bi bi-calendar3 me-1"></i>{{ $registration->batch->start_date->format('d M Y') }}
                                         </small>
@@ -282,92 +282,141 @@
             <div class="row">
                 <div class="col-md-6">
                     <h6 class="fw-bold mb-3"><i class="bi bi-person me-2"></i>Informasi Peserta</h6>
-                    <table class="table table-sm">
+                    <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="text-muted">Nama Lengkap</td>
-                            <td class="fw-semibold">${data.user.profile.full_name}</td>
+                            <td class="text-muted" width="150">Nama Lengkap</td>
+                            <td class="fw-semibold">: ${data.user.profile.full_name || '-'}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">NIDN</td>
-                            <td class="font-monospace">${data.user.profile.nidn}</td>
+                            <td class="text-muted">NIDN/NIDK/NUPTK</td>
+                            <td class="font-monospace">: ${data.user.profile.nidn || '-'}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">Email</td>
-                            <td>${data.user.email}</td>
+                            <td class="text-muted">Institusi/Universitas</td>
+                            <td>: ${data.user.profile.university || '-'}</td>
                         </tr>
                         <tr>
                             <td class="text-muted">No. Telepon</td>
-                            <td>${data.user.profile.phone_number}</td>
+                            <td>: ${data.user.profile.phone_number || '-'}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">Universitas</td>
-                            <td>${data.user.profile.university}</td>
+                            <td class="text-muted">Email</td>
+                            <td>: ${data.user.email}</td>
                         </tr>
                     </table>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="fw-bold mb-3"><i class="bi bi-calendar-event me-2"></i>Informasi Batch</h6>
-                    <table class="table table-sm">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-calendar-event me-2"></i>Informasi Batch & Pendaftaran</h6>
+                    <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="text-muted">Nama Batch</td>
-                            <td class="fw-semibold">${data.batch.name}</td>
+                            <td class="text-muted" width="150">Nama Batch</td>
+                            <td class="fw-semibold">: ${data.batch.batch_name}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Jenis Pelatihan</td>
+                            <td>: ${data.batch.training_type}</td>
                         </tr>
                         <tr>
                             <td class="text-muted">Periode</td>
-                            <td>${data.batch.start_date} - ${data.batch.end_date}</td>
+                            <td>: ${data.batch.start_date} - ${data.batch.end_date}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">Status Pendaftaran</td>
-                            <td><span class="badge bg-${getStatusColor(data.status)}">${data.status}</span></td>
+                            <td class="text-muted">Lokasi</td>
+                            <td>: ${data.batch.location}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Kuota</td>
+                            <td>: ${data.batch.max_participants} peserta</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Status</td>
+                            <td>: <span class="badge bg-${getStatusColor(data.status)}">${getStatusLabel(data.status)}</span></td>
                         </tr>
                         <tr>
                             <td class="text-muted">Tanggal Daftar</td>
-                            <td>${data.created_at}</td>
+                            <td>: ${data.created_at}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Terakhir Update</td>
+                            <td>: ${data.updated_at}</td>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="row mt-4">
+            <hr class="my-4">
+            <div class="row">
                 <div class="col-12">
-                    <h6 class="fw-bold mb-3"><i class="bi bi-file-earmark me-2"></i>Dokumen</h6>
+                    <h6 class="fw-bold mb-3"><i class="bi bi-file-earmark me-2"></i>Dokumen Pendaftaran</h6>
+                    ${data.payment_receipt || data.npwp_ktp || data.surat_tugas ? `
                     <div class="row g-3">
+                        ${data.payment_receipt ? `
                         <div class="col-md-4">
-                            <div class="card">
+                            <div class="card border-primary">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 2rem;"></i>
-                                    <p class="small mt-2 mb-2">Bukti Pembayaran</p>
-                                    <a href="${data.payment_receipt}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 2.5rem;"></i>
+                                    <p class="small mt-2 mb-2 fw-semibold">Bukti Pembayaran</p>
+                                    <a href="${data.payment_receipt}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="bi bi-download me-1"></i>Download
+                                    </a>
+                                    <a href="${data.payment_receipt}" target="_blank" class="btn btn-sm btn-outline-primary ms-1">
+                                        <i class="bi bi-eye me-1"></i>Lihat
                                     </a>
                                 </div>
                             </div>
                         </div>
+                        ` : ''}
+                        ${data.npwp_ktp ? `
                         <div class="col-md-4">
-                            <div class="card">
+                            <div class="card border-info">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 2rem;"></i>
-                                    <p class="small mt-2 mb-2">NPWP/KTP</p>
-                                    <a href="${data.npwp_ktp}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-file-earmark-pdf text-info" style="font-size: 2.5rem;"></i>
+                                    <p class="small mt-2 mb-2 fw-semibold">NPWP/KTP</p>
+                                    <a href="${data.npwp_ktp}" target="_blank" class="btn btn-sm btn-info">
                                         <i class="bi bi-download me-1"></i>Download
+                                    </a>
+                                    <a href="${data.npwp_ktp}" target="_blank" class="btn btn-sm btn-outline-info ms-1">
+                                        <i class="bi bi-eye me-1"></i>Lihat
                                     </a>
                                 </div>
                             </div>
                         </div>
+                        ` : ''}
+                        ${data.surat_tugas ? `
                         <div class="col-md-4">
-                            <div class="card">
+                            <div class="card border-success">
                                 <div class="card-body text-center">
-                                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 2rem;"></i>
-                                    <p class="small mt-2 mb-2">Surat Tugas</p>
-                                    <a href="${data.surat_tugas}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-file-earmark-pdf text-success" style="font-size: 2.5rem;"></i>
+                                    <p class="small mt-2 mb-2 fw-semibold">Surat Tugas</p>
+                                    <a href="${data.surat_tugas}" target="_blank" class="btn btn-sm btn-success">
                                         <i class="bi bi-download me-1"></i>Download
+                                    </a>
+                                    <a href="${data.surat_tugas}" target="_blank" class="btn btn-sm btn-outline-success ms-1">
+                                        <i class="bi bi-eye me-1"></i>Lihat
                                     </a>
                                 </div>
                             </div>
                         </div>
+                        ` : ''}
                     </div>
+                    ` : `
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Belum ada dokumen yang diupload
+                        </div>
+                    `}
                 </div>
             </div>
         `;
+    }
+
+    function getStatusLabel(status) {
+        const labels = {
+            'pending': 'Menunggu',
+            'approved': 'Disetujui',
+            'rejected': 'Ditolak',
+            'waitlisted': 'Waiting List'
+        };
+        return labels[status] || status;
     }
 
     function getStatusColor(status) {

@@ -5,8 +5,13 @@
 
 :8000 {
     root * /app/public
+    
+    # Enable symlink follow
+    file_server {
+        index index.php
+    }
+    
     php_server
-    file_server
     encode gzip
 
     log {

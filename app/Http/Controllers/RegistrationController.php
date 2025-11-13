@@ -57,10 +57,10 @@ class RegistrationController extends Controller
                 return back()->with('error', 'Sorry, this batch is full. Please choose another batch.');
             }
 
-            // Upload files
-            $paymentReceipt = $request->file('payment_receipt')->store('public/payment_receipts');
-            $npwpKtp = $request->file('npwp_ktp')->store('public/documents');
-            $suratTugas = $request->file('surat_tugas')->store('public/documents');
+            // Upload files to storage/app/public/
+            $paymentReceiptPath = $request->file('payment_receipt')->store('payment_receipts', 'public');
+            $npwpKtpPath = $request->file('npwp_ktp')->store('documents', 'public');
+            $suratTugasPath = $request->file('surat_tugas')->store('documents', 'public');
 
             // Create registration (status pending by default)
             Registration::create([
@@ -68,9 +68,9 @@ class RegistrationController extends Controller
                 'batch_id' => $validated['batch_id'],
                 'registration_date' => now(),
                 'status' => 'pending',
-                'payment_receipt_url' => Storage::url($paymentReceipt),
-                'npwp_ktp' => Storage::url($npwpKtp),
-                'surat_tugas' => Storage::url($suratTugas),
+                'payment_receipt_url' => $paymentReceiptPath,
+                'npwp_ktp' => $npwpKtpPath,
+                'surat_tugas' => $suratTugasPath,
             ]);
 
             DB::commit();

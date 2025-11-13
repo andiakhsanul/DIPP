@@ -201,7 +201,6 @@
                                         <th>Batch</th>
                                         <th>Tanggal Daftar</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,11 +234,6 @@
                                                         <i class="bi bi-list-ul"></i> Waiting List
                                                     </span>
                                                 @endif
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="viewDetails({{ $registration->id }})">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach

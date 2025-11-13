@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     
     // Registration Management
     Route::get('/registrations', [RegistrationManagementController::class, 'index'])->name('registrations.index');
+    Route::get('/registrations/{registration}/detail', [RegistrationManagementController::class, 'detail'])->name('registrations.detail');
     Route::post('/registrations/{registration}/approve', [RegistrationManagementController::class, 'approve'])->name('registrations.approve');
     Route::post('/registrations/{registration}/reject', [RegistrationManagementController::class, 'reject'])->name('registrations.reject');
     
