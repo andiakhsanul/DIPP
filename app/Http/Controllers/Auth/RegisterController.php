@@ -10,10 +10,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Registration Controller
+ *
+ * Handles user registration with email verification.
+ * After successful registration, user will receive email verification
+ * from PIPTP Universitas Airlangga.
+ */
 class RegisterController extends Controller
 {
     /**
      * Show the registration form.
+     *
+     * @return \Illuminate\View\View
      */
     public function showRegistrationForm()
     {
@@ -22,6 +31,12 @@ class RegisterController extends Controller
 
     /**
      * Handle a registration request.
+     *
+     * Validates input, creates new user, triggers email verification,
+     * and redirects to verification notice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function register(Request $request)
     {

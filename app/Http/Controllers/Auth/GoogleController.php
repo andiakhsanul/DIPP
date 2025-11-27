@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 
+/**
+ * Google OAuth Controller
+ *
+ * Handles Google OAuth authentication flow.
+ * Users who login via Google are automatically verified
+ * and don't need email verification.
+ */
 class GoogleController extends Controller
 {
     /**
      * Redirect to Google authentication page.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function redirectToGoogle()
     {
@@ -21,7 +30,13 @@ class GoogleController extends Controller
     }
 
     /**
-     * Handle Google callback.
+     * Handle Google callback after authentication.
+     *
+     * Creates new user or updates existing user with Google credentials.
+     * Auto-verifies email for Google users and redirects to dashboard
+     * or profile creation page.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function handleGoogleCallback()
     {
@@ -31,7 +46,7 @@ class GoogleController extends Controller
             $user = User::where('email', $googleUser->getEmail())->first();
 
             if ($user) {
-                // Update existing user with Google info
+                // Update existing user with Google credentials
                 $user->update([
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),

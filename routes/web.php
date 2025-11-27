@@ -1,21 +1,38 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TestFormController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\RegistrationManagementController;
-use App\Http\Controllers\Admin\BatchController;
+use App\Http\Controllers\Auth\{
+    LoginController,
+    RegisterController,
+    GoogleController,
+    EmailVerificationController
+};
+use App\Http\Controllers\{
+    DashboardController,
+    ProfileController,
+    RegistrationController
+};
+use App\Http\Controllers\Admin\{
+    DashboardController as AdminDashboardController,
+    RegistrationManagementController,
+    BatchController
+};
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application.
+| Routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group.
+|
+*/
+
+// Home
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -68,18 +85,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Admin Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
+
     // Registration Management
     Route::get('/registrations', [RegistrationManagementController::class, 'index'])->name('registrations.index');
     Route::get('/registrations/{registration}/detail', [RegistrationManagementController::class, 'detail'])->name('registrations.detail');
     Route::post('/registrations/{registration}/approve', [RegistrationManagementController::class, 'approve'])->name('registrations.approve');
     Route::post('/registrations/{registration}/reject', [RegistrationManagementController::class, 'reject'])->name('registrations.reject');
-    
+
     // Batch Management
     Route::resource('batches', BatchController::class);
 });
-
-// Test Form Routes
-Route::get('/test', [TestFormController::class, 'show'])->name('test.show');
-Route::post('/test', [TestFormController::class, 'submit'])->name('test.submit');
 
