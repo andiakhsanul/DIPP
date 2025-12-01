@@ -17,7 +17,7 @@ class AdminAndBatchSeeder extends Seeder
     {
         // Create Admin User (only if doesn't exist)
         $admin = User::firstOrCreate(
-            ['email' => 'admin@dipp.unair.ac.id'],
+            ['email' => 'piptp@mail.unair.ac.id'],
             [
                 'name' => 'Administrator',
                 'password' => Hash::make('admin123'),
