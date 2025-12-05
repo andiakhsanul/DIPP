@@ -96,12 +96,9 @@
                                 </div>
                                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
                                     <div class="quota-info">
-                                        <div class="small text-muted mb-1">Kuota Tersedia</div>
-                                        <h3 class="mb-0 fw-bold" id="availableSlots">-</h3>
-                                        <small class="text-muted">dari <span id="maxQuota">-</span> peserta</small>
-                                        <div class="progress mt-2" style="height: 8px;">
-                                            <div class="progress-bar" role="progressbar" id="quotaBar"></div>
-                                        </div>
+                                        <div class="small text-muted mb-1">Kuota Batch</div>
+                                        <h3 class="mb-0 fw-bold" id="maxQuota">-</h3>
+                                        <small class="text-muted">peserta</small>
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +173,25 @@
                                 <i class="bi bi-info-circle me-1"></i>Upload surat tugas resmi dari perguruan tinggi
                             </div>
                             <div class="mt-2" id="surat_tugas_preview"></div>
+                        </div>
+
+                        <!-- Sertifikat Pekerti (Conditional for AA batch) -->
+                        <div class="mb-4 d-none" id="pekerti_certificate_field">
+                            <label for="pekerti_certificate" class="form-label">
+                                Sertifikat Pekerti <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" 
+                                   class="form-control @error('pekerti_certificate') is-invalid @enderror" 
+                                   id="pekerti_certificate" 
+                                   name="pekerti_certificate" 
+                                   accept="image/*,.pdf">
+                            @error('pekerti_certificate')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Upload sertifikat pekerti (Required untuk batch jenis AA)
+                            </div>
+                            <div class="mt-2" id="pekerti_certificate_preview"></div>
                         </div>
 
                         <!-- File Size Warning -->
@@ -278,37 +294,32 @@
 
         function displayBatchInfo(batch) {
             const available = batch.max_participants - batch.registrations_count;
-            const percentage = (batch.registrations_count / batch.max_participants) * 100;
             
             document.getElementById('batchName').textContent = batch.name;
             document.getElementById('batchDescription').textContent = batch.description || 'Tidak ada deskripsi';
             document.getElementById('batchStart').textContent = formatDate(batch.start_date);
             document.getElementById('batchEnd').textContent = formatDate(batch.end_date);
-            document.getElementById('availableSlots').textContent = available;
             document.getElementById('maxQuota').textContent = batch.max_participants;
             
-            const quotaBar = document.getElementById('quotaBar');
-            quotaBar.style.width = percentage + '%';
+            // Show/hide pekerti certificate field based on batch requirement
+            const pekertiField = document.getElementById('pekerti_certificate_field');
+            const pekertiInput = document.getElementById('pekerti_certificate');
             
-            const availableElement = document.getElementById('availableSlots');
-            availableElement.classList.remove('quota-full', 'quota-limited', 'quota-available');
+            if (batch.requires_pekerti_certificate) {
+                pekertiField.classList.remove('d-none');
+                pekertiInput.setAttribute('required', 'required');
+            } else {
+                pekertiField.classList.add('d-none');
+                pekertiInput.removeAttribute('required');
+                pekertiInput.value = ''; // Clear file input
+                document.getElementById('pekerti_certificate_preview').innerHTML = ''; // Clear preview
+            }
             
+            // Check if quota is full and disable submit button
             if (available === 0) {
-                availableElement.classList.add('quota-full');
-                quotaBar.classList.remove('bg-success', 'bg-warning');
-                quotaBar.classList.add('bg-danger');
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="bi bi-x-circle me-2"></i>Kuota Penuh';
-            } else if (available <= 5) {
-                availableElement.classList.add('quota-limited');
-                quotaBar.classList.remove('bg-success', 'bg-danger');
-                quotaBar.classList.add('bg-warning');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Pendaftaran';
             } else {
-                availableElement.classList.add('quota-available');
-                quotaBar.classList.remove('bg-warning', 'bg-danger');
-                quotaBar.classList.add('bg-success');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Pendaftaran';
             }
@@ -321,7 +332,7 @@
         }
 
         // File preview handlers
-        const fileInputs = ['payment_receipt', 'npwp_ktp', 'surat_tugas'];
+        const fileInputs = ['payment_receipt', 'npwp_ktp', 'surat_tugas', 'pekerti_certificate'];
         fileInputs.forEach(inputName => {
             const input = document.getElementById(inputName);
             const preview = document.getElementById(inputName + '_preview');

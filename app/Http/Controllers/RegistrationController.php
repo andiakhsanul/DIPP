@@ -28,12 +28,22 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $batch = Batch::findOrFail($request->batch_id);
+        
+        // Build validation rules
+        $rules = [
             'batch_id' => 'required|exists:batches,id',
             'payment_receipt' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'npwp_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'surat_tugas' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+        ];
+        
+        // Add pekerti_certificate validation if batch requires it
+        if ($batch->requires_pekerti_certificate) {
+            $rules['pekerti_certificate'] = 'required|image|mimes:jpeg,png,jpg,pdf|max:2048';
+        }
+        
+        $validated = $request->validate($rules);
 
         // Check if user already registered for this batch
         $existingRegistration = Registration::where('user_id', auth()->id())
@@ -47,8 +57,6 @@ class RegistrationController extends Controller
         DB::beginTransaction();
 
         try {
-            $batch = Batch::findOrFail($validated['batch_id']);
-
             // Check quota with FIFO logic
             $approvedCount = $batch->approvedCount();
 
@@ -61,6 +69,12 @@ class RegistrationController extends Controller
             $paymentReceiptPath = $request->file('payment_receipt')->store('payment_receipts', 'public');
             $npwpKtpPath = $request->file('npwp_ktp')->store('documents', 'public');
             $suratTugasPath = $request->file('surat_tugas')->store('documents', 'public');
+            
+            // Upload pekerti certificate if provided
+            $pekertiCertPath = null;
+            if ($request->hasFile('pekerti_certificate')) {
+                $pekertiCertPath = $request->file('pekerti_certificate')->store('certificates', 'public');
+            }
 
             // Create registration (status pending by default)
             Registration::create([
@@ -71,6 +85,7 @@ class RegistrationController extends Controller
                 'payment_receipt_url' => $paymentReceiptPath,
                 'npwp_ktp' => $npwpKtpPath,
                 'surat_tugas' => $suratTugasPath,
+                'pekerti_certificate' => $pekertiCertPath,
             ]);
 
             DB::commit();

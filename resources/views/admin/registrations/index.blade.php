@@ -347,10 +347,10 @@
             <div class="row">
                 <div class="col-12">
                     <h6 class="fw-bold mb-3"><i class="bi bi-file-earmark me-2"></i>Dokumen Pendaftaran</h6>
-                    ${data.payment_receipt || data.npwp_ktp || data.surat_tugas ? `
+                    ${data.payment_receipt || data.npwp_ktp || data.surat_tugas || data.pekerti_certificate ? `
                     <div class="row g-3">
                         ${data.payment_receipt ? `
-                        <div class="col-md-4">
+                        <div class="${data.pekerti_certificate ? 'col-md-3' : 'col-md-4'}">
                             <div class="card border-primary">
                                 <div class="card-body text-center">
                                     <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 2.5rem;"></i>
@@ -366,7 +366,7 @@
                         </div>
                         ` : ''}
                         ${data.npwp_ktp ? `
-                        <div class="col-md-4">
+                        <div class="${data.pekerti_certificate ? 'col-md-3' : 'col-md-4'}">
                             <div class="card border-info">
                                 <div class="card-body text-center">
                                     <i class="bi bi-file-earmark-pdf text-info" style="font-size: 2.5rem;"></i>
@@ -382,7 +382,7 @@
                         </div>
                         ` : ''}
                         ${data.surat_tugas ? `
-                        <div class="col-md-4">
+                        <div class="${data.pekerti_certificate ? 'col-md-3' : 'col-md-4'}">
                             <div class="card border-success">
                                 <div class="card-body text-center">
                                     <i class="bi bi-file-earmark-pdf text-success" style="font-size: 2.5rem;"></i>
@@ -391,6 +391,22 @@
                                         <i class="bi bi-download me-1"></i>Download
                                     </a>
                                     <a href="${data.surat_tugas}" target="_blank" class="btn btn-sm btn-outline-success ms-1">
+                                        <i class="bi bi-eye me-1"></i>Lihat
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${data.pekerti_certificate ? `
+                        <div class="col-md-3">
+                            <div class="card border-warning">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-award text-warning" style="font-size: 2.5rem;"></i>
+                                    <p class="small mt-2 mb-2 fw-semibold">Sertifikat Pekerti</p>
+                                    <a href="${data.pekerti_certificate}" target="_blank" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-download me-1"></i>Download
+                                    </a>
+                                    <a href="${data.pekerti_certificate}" target="_blank" class="btn btn-sm btn-outline-warning ms-1">
                                         <i class="bi bi-eye me-1"></i>Lihat
                                     </a>
                                 </div>
