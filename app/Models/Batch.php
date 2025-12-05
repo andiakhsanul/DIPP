@@ -12,6 +12,7 @@ class Batch extends Model
     protected $fillable = [
         'batch_name',
         'training_type',
+        'requires_pekerti_certificate',
         'start_date',
         'end_date',
         'registration_start',
@@ -28,7 +29,7 @@ class Batch extends Model
         'end_date' => 'date',
         'registration_start' => 'date',
         'registration_end' => 'date',
-        'is_active' => 'boolean',
+        'requires_pekerti_certificate' => 'boolean',
     ];
 
     /**

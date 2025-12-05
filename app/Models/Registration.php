@@ -17,6 +17,7 @@ class Registration extends Model
         'payment_receipt_url',
         'npwp_ktp',
         'surat_tugas',
+        'pekerti_certificate',
     ];
 
     protected $casts = [

@@ -71,6 +71,7 @@ class RegistrationManagementController extends Controller
             'payment_receipt' => $getFileUrl($registration->payment_receipt_url),
             'npwp_ktp' => $getFileUrl($registration->npwp_ktp),
             'surat_tugas' => $getFileUrl($registration->surat_tugas),
+            'pekerti_certificate' => $getFileUrl($registration->pekerti_certificate),
             'user' => [
                 'name' => $registration->user->name,
                 'email' => $registration->user->email,
