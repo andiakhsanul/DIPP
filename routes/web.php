@@ -15,7 +15,8 @@ use App\Http\Controllers\{
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboardController,
     RegistrationManagementController,
-    BatchController
+    BatchController,
+    RegistrationAlertController
 };
 
 /*
@@ -94,5 +95,9 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
 
     // Batch Management
     Route::resource('batches', BatchController::class);
+
+    // Registration Alert Management
+    Route::resource('registration-alerts', RegistrationAlertController::class);
+    Route::post('registration-alerts/{registration_alert}/toggle', [RegistrationAlertController::class, 'toggleStatus'])->name('registration-alerts.toggle');
 });
 
